@@ -135,8 +135,20 @@ preprocess = ColumnTransformer([
 def build_model(kernel_choice):
     if kernel_choice == "Linear SVM":
         clf = SVC(kernel="linear", C=1, probability=True, random_state=42)
+
     elif kernel_choice == "Polynomial SVM":
-        clf = SVC(kernel="poly", degree=3, C=1, gamma="scale", probability=True, random_state=42)
+        # FIXED polynomial kernel (more stable + not rejecting always)
+        clf = SVC(
+            kernel="poly",
+            degree=2,
+            C=5,
+            gamma="scale",
+            coef0=1,
+            class_weight="balanced",
+            probability=True,
+            random_state=42
+        )
+
     else:
         clf = SVC(kernel="rbf", C=1, gamma="scale", probability=True, random_state=42)
 
